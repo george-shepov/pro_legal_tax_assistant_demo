@@ -3,9 +3,10 @@
 A deterministic, zero-backend product demonstration built from fictional data.
 It makes no LLM calls, uploads no files, and requires no paid runtime service.
 
-The page automatically scrolls into a guided four-workflow tour. Visitors can
-pause, replay, choose a workflow, or use the prominent **NEXT** control. The tour
-finishes at the contact and deployment options.
+The page starts a slow guided four-workflow tour without taking over the visitor's
+scroll position. Subtle top and bottom edge arrows indicate where to move. Visitors
+can pause, replay, choose a workflow, or use the prominent **NEXT** control. The
+tour concludes with contact and deployment options.
 
 ## Run locally
 

@@ -21,6 +21,7 @@ const state = {
   complete: false,
   journeyFinished: false,
   speed: 1,
+  tutorialPace: 1.9,
   generation: 0,
   reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   evidenceCount: 0,
@@ -40,11 +41,9 @@ const elements = {
   runState: document.querySelector("#run-state"),
   progress: document.querySelector("#progress-bar"),
   play: document.querySelector("#play-button"),
-  restart: document.querySelector("#restart-button"),
   next: document.querySelector("#next-button"),
   restartTour: document.querySelector("#restart-tour-button"),
   tourPosition: document.querySelector("#tour-position"),
-  speed: document.querySelector("#speed-select"),
   dialog: document.querySelector("#artifact-dialog"),
   dialogTitle: document.querySelector("#artifact-title"),
   dialogPreview: document.querySelector("#artifact-preview"),
@@ -56,7 +55,10 @@ const elements = {
   formStatus: document.querySelector("#form-status"),
   submit: document.querySelector("#submit-button"),
   repositoryLink: document.querySelector("#repository-link"),
-  deploymentLink: document.querySelector("#deployment-link")
+  deploymentLink: document.querySelector("#deployment-link"),
+  scrollHintTop: document.querySelector("#scroll-hint-top"),
+  scrollHintBottom: document.querySelector("#scroll-hint-bottom"),
+  scrollHintLabel: document.querySelector("#scroll-hint-label")
 };
 
 function createElement(tag, options = {}) {
@@ -107,7 +109,8 @@ async function initialize() {
     buildTabs();
     selectScenario(0);
     bindEvents();
-    window.setTimeout(startGuidedTour, 450);
+    updateScrollHints();
+    window.setTimeout(startGuidedTour, 700);
   } catch (error) {
     showFatalError(error);
   }
@@ -238,13 +241,12 @@ function showEmptyFeed(scenario) {
 
 function bindEvents() {
   elements.play.addEventListener("click", togglePlayback);
-  elements.restart.addEventListener("click", restartScenario);
   elements.next.addEventListener("click", handleNext);
   elements.restartTour.addEventListener("click", startGuidedTour);
-  elements.speed.addEventListener("change", () => {
-    state.speed = Number(elements.speed.value) || 1;
-    if (state.playing) scheduleNext(0);
-  });
+  elements.scrollHintTop.addEventListener("click", scrollUp);
+  elements.scrollHintBottom.addEventListener("click", scrollDown);
+  window.addEventListener("scroll", updateScrollHints, { passive: true });
+  window.addEventListener("resize", updateScrollHints);
   elements.dialogClose.addEventListener("click", closeDialog);
   elements.dialogCancel.addEventListener("click", closeDialog);
   elements.leadForm.addEventListener("submit", submitLead);
@@ -280,14 +282,14 @@ function scrollToElement(element) {
 
 function startGuidedTour() {
   selectScenario(0);
-  scrollToElement(document.querySelector("#demo"));
   startPlayback();
+  updateScrollHints();
 }
 
 function launchScenario(index) {
   selectScenario(index);
-  scrollToElement(document.querySelector(".app-shell"));
   startPlayback();
+  updateScrollHints();
 }
 
 function advanceJourney() {
@@ -313,7 +315,57 @@ function finishJourney() {
   state.journeyFinished = true;
   elements.tourPosition.textContent = "Tour complete";
   updatePlaybackUi();
-  scrollToElement(document.querySelector("#contact"));
+  updateScrollHints();
+}
+
+function scrollUp() {
+  window.scrollBy({
+    top: -Math.max(420, window.innerHeight * 0.72),
+    behavior: state.reducedMotion ? "auto" : "smooth"
+  });
+}
+
+function scrollDown() {
+  const demo = document.querySelector("#demo");
+  const contact = document.querySelector("#contact");
+  const demoTop = demo?.offsetTop || 0;
+  const contactTop = contact?.offsetTop || document.body.scrollHeight;
+  let target = null;
+
+  if (window.scrollY < demoTop - 120) {
+    target = demo;
+  } else if (state.journeyFinished || window.scrollY < contactTop - window.innerHeight) {
+    target = contact;
+  }
+
+  if (target) {
+    scrollToElement(target);
+  } else {
+    window.scrollBy({
+      top: Math.max(420, window.innerHeight * 0.72),
+      behavior: state.reducedMotion ? "auto" : "smooth"
+    });
+  }
+}
+
+function updateScrollHints() {
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const nearTop = window.scrollY < 120;
+  const nearBottom = window.scrollY > maxScroll - 160;
+  const demo = document.querySelector("#demo");
+  const beforeDemo = demo ? window.scrollY + window.innerHeight < demo.offsetTop + 180 : false;
+
+  elements.scrollHintTop.classList.toggle("visible", !nearTop);
+  elements.scrollHintBottom.classList.toggle("visible", !nearBottom);
+  elements.scrollHintLabel.textContent = beforeDemo
+    ? "Demo playing below"
+    : state.journeyFinished
+      ? "Continue to contact"
+      : "Continue down";
+  elements.scrollHintBottom.setAttribute(
+    "aria-label",
+    beforeDemo ? "Scroll down to the guided demo" : state.journeyFinished ? "Scroll down to contact options" : "Scroll down"
+  );
 }
 
 function togglePlayback() {
@@ -366,7 +418,7 @@ function scheduleNext(overrideDelay) {
     finishScenario();
     return;
   }
-  const delay = overrideDelay ?? (state.reducedMotion ? 40 : event.delay / state.speed);
+  const delay = overrideDelay ?? ((event.delay * state.tutorialPace) / state.speed);
   const generation = state.generation;
   state.timer = setTimeout(async () => {
     if (!state.playing || generation !== state.generation) return;
@@ -446,7 +498,7 @@ async function streamText(node, text, generation) {
     if (!state.playing || generation !== state.generation) return;
     node.textContent += word;
     elements.feed.scrollTop = elements.feed.scrollHeight;
-    await wait(Math.max(8, 32 / state.speed));
+    await wait(Math.max(18, 52 / state.speed));
   }
 }
 
@@ -512,7 +564,7 @@ function finishScenario() {
   state.timer = null;
   updateProgress();
   updatePlaybackUi();
-  state.tourTimer = window.setTimeout(advanceJourney, state.reducedMotion ? 500 : 1600);
+  state.tourTimer = window.setTimeout(advanceJourney, 3600 / state.speed);
 }
 
 function updateProgress() {
@@ -524,8 +576,8 @@ function updateProgress() {
 function updatePlaybackUi() {
   elements.runState.className = `run-state${state.playing ? " running" : state.complete ? " complete" : ""}`;
   elements.runState.lastChild.textContent = state.playing ? " Running" : state.complete ? " Complete" : state.eventIndex ? " Paused" : " Ready";
-  elements.play.textContent = state.playing ? "Pause" : state.complete ? "Replay" : state.eventIndex ? "Resume" : "Start demo";
-  elements.play.setAttribute("aria-label", state.playing ? "Pause scenario" : state.complete ? "Replay scenario" : "Start or resume scenario");
+  elements.play.textContent = state.playing ? "Pause tour" : state.complete ? "Replay workflow" : state.eventIndex ? "Resume tour" : "Start tour";
+  elements.play.setAttribute("aria-label", state.playing ? "Pause guided tour" : state.complete ? "Replay current workflow" : "Start or resume guided tour");
   const finalScenario = state.scenarioIndex === state.scenarios.length - 1;
   elements.next.textContent = state.journeyFinished ? "RESTART TOUR" : finalScenario ? "CONTACT →" : "NEXT →";
 }

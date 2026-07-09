@@ -107,7 +107,10 @@
             <strong>Guided tour autoplaying</strong>
             <small id="tour-position">Workflow 1 of 4</small>
           </div>
-          <span>Watch, pause, or press NEXT at any time.</span>
+          <div class="tour-banner-actions">
+            <span>Press NEXT at any time.</span>
+            <button id="play-button" type="button" aria-label="Pause guided tour">Pause tour</button>
+          </div>
         </div>
 
         <div class="scenario-tabs" id="scenario-tabs" role="tablist" aria-label="Demo scenarios"></div>
@@ -160,19 +163,8 @@
               <div class="playback" aria-label="Demo playback controls">
                 <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
                 <div class="playback-row">
-                  <button class="icon-button" id="restart-button" type="button" title="Restart scenario (R)" aria-label="Restart scenario">↻</button>
-                  <button class="button button-primary play-button" id="play-button" type="button" aria-label="Start scenario">Start demo</button>
+                  <span class="playback-note">This workflow advances automatically.</span>
                   <button class="button next-button" id="next-button" type="button">NEXT <span aria-hidden="true">→</span></button>
-                  <label class="speed-control" for="speed-select">
-                    Speed
-                    <select id="speed-select">
-                      <option value="1">1×</option>
-                      <option value="1.5">1.5×</option>
-                      <option value="2">2×</option>
-                      <option value="4">4×</option>
-                    </select>
-                  </label>
-                  <span class="shortcut">Space to pause · R to restart</span>
                 </div>
               </div>
             </section>
@@ -296,6 +288,15 @@
       <p>Assists professionals; does not replace legal, tax, or other professional judgment.</p>
       <a id="repository-link" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo">View repository</a>
     </footer>
+
+    <button class="scroll-hint scroll-hint-top" id="scroll-hint-top" type="button" aria-label="Scroll up">
+      <span aria-hidden="true">↑</span>
+      <small>Back up</small>
+    </button>
+    <button class="scroll-hint scroll-hint-bottom" id="scroll-hint-bottom" type="button" aria-label="Scroll down to the guided demo">
+      <small id="scroll-hint-label">Demo playing below</small>
+      <span aria-hidden="true">↓</span>
+    </button>
 
     <dialog id="artifact-dialog" aria-labelledby="artifact-title">
       <div class="dialog-head">
