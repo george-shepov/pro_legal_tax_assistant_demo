@@ -1,0 +1,21 @@
+FICTIONAL DEMO ARTIFACT — NOT A COURT RECORD
+
+DOCKET SNAPSHOT CHANGE REVIEW
+
+Comparison result
+- Prior snapshot: 14 normalized entries
+- Current snapshot: 15 normalized entries
+- Added: 1
+- Modified: 0
+- Removed: 0
+
+New entry
+Entry 15 — Fictional order setting a status conference, shown as filed June 16.
+
+Professional validation
+[ ] Compare the entry with the official docket.
+[ ] Open and review the source order.
+[ ] Determine obligations and deadlines through qualified review.
+[ ] Record verification in the matter log.
+
+The application comparison does not calculate a legal deadline.

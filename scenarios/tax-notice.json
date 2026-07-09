@@ -1,0 +1,103 @@
+{
+  "id": "tax-notice",
+  "version": "1.0",
+  "title": "Tax notice triage with specialist routing",
+  "shortTitle": "Tax notice triage",
+  "description": "Route a fictional notice, retrieve source facts, and produce a bounded preparation checklist.",
+  "benefit": "Organize facts before professional action",
+  "matter": "Juniper Design Studio · FICTIONAL",
+  "icon": "◎",
+  "prompt": "Summarize a fictional notice and identify missing information.",
+  "agents": [
+    { "name": "Coordinator", "avatar": "◎" },
+    { "name": "Tax Specialist", "avatar": "$" },
+    { "name": "Tax Controversy", "avatar": "▧" }
+  ],
+  "events": [
+    {
+      "type": "status",
+      "delay": 300,
+      "text": "Fictional tax workspace loaded · external provider routing disabled in this demo"
+    },
+    {
+      "type": "user_message",
+      "delay": 550,
+      "text": "Summarize this fictional notice, identify the stated issue, and give me a missing-information checklist for professional review."
+    },
+    {
+      "type": "agent_route",
+      "delay": 500,
+      "agent": "Tax Specialist",
+      "text": "Coordinator routed the request to Tax Specialist."
+    },
+    {
+      "type": "tool_start",
+      "delay": 450,
+      "text": "Searching the attached notice and matter documents · matter filter applied"
+    },
+    {
+      "type": "citation",
+      "delay": 600,
+      "title": "Agency information request — fictional.pdf",
+      "snippet": "The fictional notice requests support for three expense categories and identifies a response date printed on the first page.",
+      "sourceType": "document",
+      "page": 1,
+      "relevanceScore": 0.96,
+      "jurisdiction": "Fictional agency"
+    },
+    {
+      "type": "citation",
+      "delay": 500,
+      "title": "Expense ledger — fictional.csv",
+      "snippet": "Two categories contain memo descriptions but no linked receipts; one travel line lacks a business-purpose field.",
+      "sourceType": "document",
+      "relevanceScore": 0.89,
+      "jurisdiction": "Fictional matter file"
+    },
+    {
+      "type": "tool_complete",
+      "delay": 400,
+      "text": "Retrieval complete · 5 chunks reviewed · 2 sources selected"
+    },
+    {
+      "type": "agent_message",
+      "delay": 400,
+      "agent": "Tax Specialist",
+      "avatar": "$",
+      "stream": true,
+      "text": "The fictional notice asks for substantiation of three expense categories. The matter ledger shows missing receipt links in two categories and an incomplete business-purpose field for one travel item. Before a professional prepares any response, verify the notice date from the original, obtain the missing receipts, document business purpose, and reconcile the listed totals to the filed return."
+    },
+    {
+      "type": "warning",
+      "delay": 450,
+      "text": "This workflow organizes source facts. It does not determine tax liability, predict savings, or replace licensed review."
+    },
+    {
+      "type": "generated_file",
+      "delay": 550,
+      "title": "Tax notice preparation checklist",
+      "filename": "fictional-tax-notice-checklist.txt",
+      "path": "artifacts/fictional-tax-notice-checklist.txt",
+      "status": "Ready",
+      "text": "A preparer-oriented missing-information checklist is ready.",
+      "sourceType": "generated artifact"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "Open items",
+      "value": "4"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "Source files",
+      "value": "2"
+    },
+    {
+      "type": "call_to_action",
+      "delay": 400,
+      "text": "Triage complete · move the source-backed checklist to professional review"
+    }
+  ]
+}

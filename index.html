@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#080a0f">
+    <meta
+      name="description"
+      content="A deterministic, fictional demonstration of the Professional Legal & Tax Assistant."
+    >
+    <title>Professional Legal &amp; Tax Assistant — Interactive Demo</title>
+    <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#demo">Skip to interactive demo</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Professional Legal and Tax Assistant home">
+        <img src="assets/mark.svg" width="34" height="34" alt="">
+        <span>
+          <strong>Legal.Giorgiy.org</strong>
+          <small>Professional Legal &amp; Tax Assistant</small>
+        </span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#capabilities">Capabilities</a>
+        <a href="#demo">Demo</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+      <a class="button button-small button-quiet" href="#contact">Discuss deployment</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span> Deterministic product demonstration</div>
+          <h1 id="hero-title">Case intelligence, grounded in the work already on your desk.</h1>
+          <p class="lede">
+            Bring legal and tax documents, matter history, specialist workflows, and
+            source-backed drafting into one self-hostable professional workspace.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#demo">Explore four workflows <span aria-hidden="true">→</span></a>
+            <a class="button button-quiet" href="#contact">Request a private pilot</a>
+          </div>
+          <p class="fine-print">
+            This interactive experience is simulated with fictional data. No files are
+            uploaded and no model or paid API is called.
+          </p>
+        </div>
+        <aside class="hero-proof" aria-label="Product highlights">
+          <div class="proof-topline">
+            <span>Workspace readiness</span>
+            <span class="status-pill"><i></i> Static demo ready</span>
+          </div>
+          <div class="proof-grid">
+            <article>
+              <span class="proof-icon">⌕</span>
+              <strong>Grounded retrieval</strong>
+              <small>Hybrid and vector search with source metadata</small>
+            </article>
+            <article>
+              <span class="proof-icon">◎</span>
+              <strong>Specialist routing</strong>
+              <small>Coordinator-led legal and tax workflows</small>
+            </article>
+            <article>
+              <span class="proof-icon">▤</span>
+              <strong>Matter operations</strong>
+              <small>Documents, dockets, timelines, and exports</small>
+            </article>
+            <article>
+              <span class="proof-icon">⌂</span>
+              <strong>Deployment choice</strong>
+              <small>Local Ollama or configured external providers</small>
+            </article>
+          </div>
+        </aside>
+      </section>
+
+      <section class="capability-strip" id="capabilities" aria-label="Confirmed capabilities">
+        <span>Document ingestion &amp; OCR</span>
+        <span>RAG &amp; citations</span>
+        <span>Specialist agents</span>
+        <span>Docket intelligence</span>
+        <span>PDF &amp; DOCX output</span>
+      </section>
+
+      <section class="demo-section" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Inside the workspace</div>
+            <h2 id="demo-title">Watch a complete workflow, then inspect every source.</h2>
+          </div>
+          <p>
+            Select a scenario. Each run follows a fixed, reviewable event sequence based
+            on capabilities implemented in the repository.
+          </p>
+        </div>
+
+        <div class="scenario-tabs" id="scenario-tabs" role="tablist" aria-label="Demo scenarios"></div>
+
+        <div class="app-shell" aria-label="Simulated application workspace">
+          <header class="app-bar">
+            <div class="app-brand">
+              <img src="assets/mark.svg" width="28" height="28" alt="">
+              <span>Legal.Giorgiy.org</span>
+              <span class="simulation-badge">SIMULATED DEMO</span>
+            </div>
+            <div class="app-context">
+              <span id="matter-label">Fictional matter</span>
+              <span class="provider-chip">Configurable provider</span>
+            </div>
+          </header>
+
+          <div class="app-body">
+            <aside class="app-nav" aria-label="Application navigation">
+              <div class="nav-group">
+                <small>WORKSPACE</small>
+                <button class="nav-item active" type="button"><span>◫</span> Chat</button>
+                <button class="nav-item" type="button" tabindex="-1"><span>▱</span> Cases</button>
+                <button class="nav-item" type="button" tabindex="-1"><span>▤</span> Files</button>
+                <button class="nav-item" type="button" tabindex="-1"><span>⌕</span> Search</button>
+              </div>
+              <div class="nav-group">
+                <small>ACTIVE TEAM</small>
+                <div id="agent-list" class="agent-list"></div>
+              </div>
+              <div class="local-note">
+                <span>⌂</span>
+                <div><strong>Self-hostable</strong><small>Your provider choice controls where inference runs.</small></div>
+              </div>
+            </aside>
+
+            <section class="conversation-panel" aria-label="Scenario conversation">
+              <div class="conversation-head">
+                <div>
+                  <strong id="scenario-title">Loading scenario…</strong>
+                  <small id="scenario-subtitle">Preparing deterministic events</small>
+                </div>
+                <div class="run-state" id="run-state" aria-live="polite">
+                  <span></span> Ready
+                </div>
+              </div>
+
+              <div class="event-feed" id="event-feed" aria-live="polite" aria-relevant="additions"></div>
+
+              <div class="playback" aria-label="Demo playback controls">
+                <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+                <div class="playback-row">
+                  <button class="icon-button" id="restart-button" type="button" title="Restart scenario (R)" aria-label="Restart scenario">↻</button>
+                  <button class="button button-primary play-button" id="play-button" type="button" aria-label="Start scenario">Start demo</button>
+                  <label class="speed-control" for="speed-select">
+                    Speed
+                    <select id="speed-select">
+                      <option value="1">1×</option>
+                      <option value="1.5">1.5×</option>
+                      <option value="2">2×</option>
+                      <option value="4">4×</option>
+                    </select>
+                  </label>
+                  <span class="shortcut">Space to pause · R to restart</span>
+                </div>
+              </div>
+            </section>
+
+            <aside class="evidence-panel" aria-label="Sources and work product">
+              <div class="evidence-tabs" role="tablist" aria-label="Evidence panel">
+                <button class="active" type="button" role="tab" aria-selected="true">Sources</button>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1">Activity</button>
+              </div>
+              <div class="evidence-summary">
+                <span>Scenario evidence</span>
+                <strong id="evidence-count">0 items</strong>
+              </div>
+              <div id="evidence-list" class="evidence-list"></div>
+              <div class="metric-grid" id="metric-grid"></div>
+            </aside>
+          </div>
+        </div>
+
+        <p class="demo-disclaimer">
+          Fictional names, matters, documents, citations, scores, and timelines are used
+          throughout. Outputs illustrate workflow behavior and require qualified
+          professional review.
+        </p>
+      </section>
+
+      <section class="privacy-section" id="privacy" aria-labelledby="privacy-title">
+        <div>
+          <div class="eyebrow">Deployment-aware privacy</div>
+          <h2 id="privacy-title">Keep control of the application stack—and choose how models run.</h2>
+        </div>
+        <div class="privacy-cards">
+          <article>
+            <span>01</span>
+            <h3>Self-host the workspace</h3>
+            <p>Run the application and its storage services on infrastructure you control.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Route providers deliberately</h3>
+            <p>Use local Ollama inference or configure supported external model providers.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Review every result</h3>
+            <p>Expose sources, activity, and generated artifacts for professional verification.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="contact-copy">
+          <div class="eyebrow">Next step</div>
+          <h2 id="contact-title">Evaluate it against your workflow.</h2>
+          <p>
+            Request a managed VPS deployment, a self-installation discussion, or a
+            structured pilot consultation. Do not include client names, case facts, tax
+            identifiers, or other confidential information.
+          </p>
+          <a id="deployment-link" class="text-link" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo/blob/main/DEPLOYMENT.md">Review deployment options →</a>
+        </div>
+
+        <form id="lead-form" class="lead-form">
+          <div class="form-grid">
+            <label>
+              Name
+              <input name="name" autocomplete="name" required>
+            </label>
+            <label>
+              Work email
+              <input name="email" type="email" autocomplete="email" required>
+            </label>
+            <label>
+              Organization
+              <input name="organization" autocomplete="organization">
+            </label>
+            <label>
+              Professional role
+              <select name="role" required>
+                <option value="">Select role</option>
+                <option>Attorney / legal professional</option>
+                <option>Tax professional</option>
+                <option>Legal operations</option>
+                <option>Technology / security</option>
+                <option>Other professional</option>
+              </select>
+            </label>
+            <label class="wide">
+              Primary use case
+              <select name="useCase" required>
+                <option value="">Select use case</option>
+                <option>Document review and research</option>
+                <option>Case and docket operations</option>
+                <option>Tax document workflows</option>
+                <option>Private AI workspace evaluation</option>
+              </select>
+            </label>
+            <fieldset class="wide">
+              <legend>Preferred deployment</legend>
+              <label><input type="radio" name="deployment" value="Managed VPS deployment" required> Managed VPS</label>
+              <label><input type="radio" name="deployment" value="Self-installation"> Self-installation</label>
+              <label><input type="radio" name="deployment" value="Pilot consultation"> Pilot consultation</label>
+            </fieldset>
+          </div>
+          <div id="form-mode" class="form-mode">Loading contact configuration…</div>
+          <button class="button button-primary" id="submit-button" type="submit">Prepare request</button>
+          <p id="form-status" class="form-status" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <div class="brand footer-brand">
+        <img src="assets/mark.svg" width="30" height="30" alt="">
+        <span><strong>Professional Legal &amp; Tax Assistant</strong><small>Static product demonstration</small></span>
+      </div>
+      <p>Assists professionals; does not replace legal, tax, or other professional judgment.</p>
+      <a id="repository-link" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo">View repository</a>
+    </footer>
+
+    <dialog id="artifact-dialog" aria-labelledby="artifact-title">
+      <div class="dialog-head">
+        <div>
+          <small>FICTIONAL DEMO ARTIFACT</small>
+          <h2 id="artifact-title">Artifact preview</h2>
+        </div>
+        <button class="icon-button" id="dialog-close" type="button" aria-label="Close preview">×</button>
+      </div>
+      <div id="artifact-preview" class="artifact-preview"></div>
+      <div class="dialog-actions">
+        <button class="button button-quiet" id="dialog-cancel" type="button">Close</button>
+        <a class="button button-primary" id="artifact-download" href="#" download>Download fictional sample</a>
+      </div>
+    </dialog>
+  </body>
+</html>

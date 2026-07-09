@@ -1,0 +1,96 @@
+{
+  "id": "document-intake",
+  "version": "1.0",
+  "title": "Document intake with OCR and indexing",
+  "shortTitle": "Intake & OCR",
+  "description": "A scanned fictional filing moves through extraction, confidence review, chunking, and indexing.",
+  "benefit": "Turn scans into searchable matter context",
+  "matter": "Harbor Street Holdings · FICTIONAL",
+  "icon": "▤",
+  "prompt": "Process a scanned filing and surface low-confidence text.",
+  "agents": [
+    { "name": "Coordinator", "avatar": "◎" },
+    { "name": "Paralegal & Legal Ops", "avatar": "▤" },
+    { "name": "eDiscovery & Forensics", "avatar": "◇" }
+  ],
+  "events": [
+    {
+      "type": "status",
+      "delay": 300,
+      "text": "Fictional intake workspace ready · document storage and vector index simulated"
+    },
+    {
+      "type": "document_upload",
+      "delay": 600,
+      "text": "Uploaded: scanned-order-fictional.pdf · 8 pages · 2.4 MB"
+    },
+    {
+      "type": "agent_route",
+      "delay": 500,
+      "agent": "Paralegal & Legal Ops",
+      "text": "Coordinator routed intake review to Paralegal & Legal Ops."
+    },
+    {
+      "type": "tool_start",
+      "delay": 500,
+      "text": "OCR started · image preprocessing · page-level confidence enabled"
+    },
+    {
+      "type": "document_parsed",
+      "delay": 750,
+      "title": "scanned-order-fictional.pdf",
+      "text": "8 pages parsed · 6,420 characters extracted · 9 vector chunks prepared",
+      "sourceType": "OCR document",
+      "status": "Parsed"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "OCR confidence",
+      "value": "91.7%"
+    },
+    {
+      "type": "warning",
+      "delay": 450,
+      "text": "Page 6 confidence is 68%. Verify the hearing date against the source image before relying on it."
+    },
+    {
+      "type": "tool_complete",
+      "delay": 500,
+      "text": "Vector indexing complete · 9 chunks stored with filename, page, and matter metadata"
+    },
+    {
+      "type": "citation",
+      "delay": 500,
+      "title": "scanned-order-fictional.pdf",
+      "snippet": "A status conference appears on page 6, but the day numeral is below the configured confidence threshold.",
+      "sourceType": "OCR passage",
+      "page": 6,
+      "relevanceScore": 0.86,
+      "jurisdiction": "Fictional filing"
+    },
+    {
+      "type": "agent_message",
+      "delay": 400,
+      "agent": "Paralegal & Legal Ops",
+      "avatar": "▤",
+      "stream": true,
+      "text": "The filing is searchable and associated with the fictional matter. Seven pages passed the review threshold. Page 6 needs visual confirmation because the date numeral was extracted at lower confidence. I have separated that item from the confirmed document metadata."
+    },
+    {
+      "type": "generated_file",
+      "delay": 550,
+      "title": "OCR verification checklist",
+      "filename": "fictional-ocr-review-checklist.txt",
+      "path": "artifacts/fictional-ocr-review-checklist.txt",
+      "status": "Ready",
+      "text": "A bounded verification checklist is ready.",
+      "sourceType": "generated artifact"
+    },
+    {
+      "type": "call_to_action",
+      "delay": 400,
+      "text": "Intake complete · the low-confidence item remains explicitly unresolved"
+    }
+  ]
+}

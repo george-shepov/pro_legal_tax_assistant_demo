@@ -1,0 +1,99 @@
+{
+  "id": "grounded-research",
+  "version": "1.0",
+  "title": "Grounded research across a fictional matter",
+  "shortTitle": "Grounded research",
+  "description": "Coordinator routing, hybrid retrieval, source passages, and reviewable work product.",
+  "benefit": "Trace every statement to its source",
+  "matter": "Northstar Supply v. Alder Works · FICTIONAL",
+  "icon": "⌕",
+  "prompt": "Build a source-backed chronology of the notice dispute.",
+  "agents": [
+    { "name": "Coordinator", "avatar": "◎" },
+    { "name": "Legal Researcher", "avatar": "⌕" },
+    { "name": "Civil Litigation", "avatar": "⚖" }
+  ],
+  "events": [
+    {
+      "type": "status",
+      "delay": 300,
+      "text": "Loaded fictional matter workspace: 3 indexed documents · no external connectors enabled"
+    },
+    {
+      "type": "user_message",
+      "delay": 650,
+      "text": "Build a concise chronology of the notice dispute. Cite the exact matter documents and flag anything that needs human verification."
+    },
+    {
+      "type": "agent_route",
+      "delay": 650,
+      "agent": "Legal Researcher",
+      "text": "Coordinator routed this request to Legal Researcher for source-grounded review."
+    },
+    {
+      "type": "tool_start",
+      "delay": 500,
+      "text": "Hybrid workspace search started · semantic + keyword · matter filter applied"
+    },
+    {
+      "type": "citation",
+      "delay": 700,
+      "title": "Master Services Agreement — fictional.pdf",
+      "snippet": "Section 8.2 requires written notice and provides ten business days to cure after receipt.",
+      "sourceType": "document",
+      "page": 12,
+      "relevanceScore": 0.94,
+      "jurisdiction": "Fictional matter file"
+    },
+    {
+      "type": "citation",
+      "delay": 500,
+      "title": "Notice of Breach — fictional.pdf",
+      "snippet": "The notice is dated April 3 and states delivery by overnight courier. The attached tracking page records delivery on April 4.",
+      "sourceType": "document",
+      "page": 2,
+      "relevanceScore": 0.91,
+      "jurisdiction": "Fictional matter file"
+    },
+    {
+      "type": "tool_complete",
+      "delay": 450,
+      "text": "Search complete · 7 chunks reviewed · 2 source passages selected"
+    },
+    {
+      "type": "agent_message",
+      "delay": 450,
+      "agent": "Legal Researcher",
+      "avatar": "⌕",
+      "stream": true,
+      "text": "The agreement requires written notice followed by a ten-business-day cure period. The fictional notice is dated April 3, and its attached tracking page records delivery on April 4. Treat April 4 as the provisional receipt date, then verify the original carrier record before calculating any procedural deadline. The source set does not establish whether a later cure communication was sent."
+    },
+    {
+      "type": "generated_file",
+      "delay": 650,
+      "title": "Notice chronology — review draft",
+      "filename": "fictional-notice-chronology.txt",
+      "path": "artifacts/fictional-notice-chronology.txt",
+      "status": "Ready",
+      "text": "A source-linked chronology was prepared for professional review.",
+      "sourceType": "generated artifact"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "Sources cited",
+      "value": "2"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "Live API cost",
+      "value": "$0.00"
+    },
+    {
+      "type": "call_to_action",
+      "delay": 450,
+      "text": "Workflow complete · inspect the cited passages or replay another scenario"
+    }
+  ]
+}

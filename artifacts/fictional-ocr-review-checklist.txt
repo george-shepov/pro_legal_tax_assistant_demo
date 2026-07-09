@@ -1,0 +1,12 @@
+FICTIONAL DEMO ARTIFACT — PROFESSIONAL REVIEW REQUIRED
+
+OCR VERIFICATION CHECKLIST
+
+[x] Eight pages received
+[x] Seven pages exceeded the configured confidence threshold
+[x] Filename, page number, and fictional matter metadata attached to chunks
+[x] Nine searchable chunks prepared
+[ ] Compare the page 6 hearing date to the source image
+[ ] Confirm the original document checksum before production use
+
+No real filing or client information is represented.

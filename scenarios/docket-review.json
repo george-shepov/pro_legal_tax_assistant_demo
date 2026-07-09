@@ -1,0 +1,107 @@
+{
+  "id": "docket-review",
+  "version": "1.0",
+  "title": "Docket snapshot change review",
+  "shortTitle": "Docket changes",
+  "description": "Parse a new fictional snapshot, compare entries, update the timeline, and prepare follow-up.",
+  "benefit": "See what changed and what needs review",
+  "matter": "In re Redwood Parcel · FICTIONAL",
+  "icon": "↻",
+  "prompt": "Compare the newest docket snapshot with the prior version.",
+  "agents": [
+    { "name": "Coordinator", "avatar": "◎" },
+    { "name": "Paralegal & Legal Ops", "avatar": "▤" },
+    { "name": "Civil Litigation", "avatar": "⚖" }
+  ],
+  "events": [
+    {
+      "type": "status",
+      "delay": 300,
+      "text": "Prior fictional docket snapshot loaded · 14 entries"
+    },
+    {
+      "type": "user_message",
+      "delay": 550,
+      "text": "Compare today's docket snapshot and show only new or changed entries."
+    },
+    {
+      "type": "agent_route",
+      "delay": 500,
+      "agent": "Paralegal & Legal Ops",
+      "text": "Coordinator routed docket operations to Paralegal & Legal Ops."
+    },
+    {
+      "type": "tool_start",
+      "delay": 450,
+      "text": "Parsing fictional HTML docket snapshot · structured entry extraction"
+    },
+    {
+      "type": "document_parsed",
+      "delay": 650,
+      "title": "redwood-docket-snapshot-fictional.html",
+      "text": "15 entries parsed · entry numbers and filing dates normalized",
+      "sourceType": "docket snapshot",
+      "status": "Parsed"
+    },
+    {
+      "type": "tool_start",
+      "delay": 400,
+      "text": "Comparing snapshot hashes and normalized docket entries"
+    },
+    {
+      "type": "citation",
+      "delay": 550,
+      "title": "New docket entry 15",
+      "snippet": "Order setting a fictional status conference; filed by the court clerk on June 16.",
+      "sourceType": "docket entry",
+      "date": "June 16",
+      "relevanceScore": 1.0,
+      "jurisdiction": "Fictional court"
+    },
+    {
+      "type": "tool_complete",
+      "delay": 450,
+      "text": "Comparison complete · 1 added · 0 modified · 0 removed"
+    },
+    {
+      "type": "status",
+      "delay": 400,
+      "text": "Matter timeline updated with entry 15 · source snapshot retained"
+    },
+    {
+      "type": "agent_message",
+      "delay": 400,
+      "agent": "Paralegal & Legal Ops",
+      "avatar": "▤",
+      "stream": true,
+      "text": "One new docket entry was detected: an order setting a fictional status conference. No prior entries changed or disappeared. The event is now visible on the matter timeline. Confirm the date and any response obligations against the official docket; this comparison does not calculate legal deadlines."
+    },
+    {
+      "type": "generated_file",
+      "delay": 550,
+      "title": "Docket change review",
+      "filename": "fictional-docket-change-review.txt",
+      "path": "artifacts/fictional-docket-change-review.txt",
+      "status": "Ready",
+      "text": "A review checklist records the detected change and validation steps.",
+      "sourceType": "generated artifact"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "New entries",
+      "value": "1"
+    },
+    {
+      "type": "metric",
+      "delay": 250,
+      "label": "Changed entries",
+      "value": "0"
+    },
+    {
+      "type": "call_to_action",
+      "delay": 400,
+      "text": "Review complete · timeline updated without making a deadline claim"
+    }
+  ]
+}
