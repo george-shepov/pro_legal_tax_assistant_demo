@@ -16,8 +16,10 @@ const state = {
   scenarioIndex: 0,
   eventIndex: 0,
   timer: null,
+  tourTimer: null,
   playing: false,
   complete: false,
+  journeyFinished: false,
   speed: 1,
   generation: 0,
   reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -39,6 +41,9 @@ const elements = {
   progress: document.querySelector("#progress-bar"),
   play: document.querySelector("#play-button"),
   restart: document.querySelector("#restart-button"),
+  next: document.querySelector("#next-button"),
+  restartTour: document.querySelector("#restart-tour-button"),
+  tourPosition: document.querySelector("#tour-position"),
   speed: document.querySelector("#speed-select"),
   dialog: document.querySelector("#artifact-dialog"),
   dialogTitle: document.querySelector("#artifact-title"),
@@ -102,6 +107,7 @@ async function initialize() {
     buildTabs();
     selectScenario(0);
     bindEvents();
+    window.setTimeout(startGuidedTour, 450);
   } catch (error) {
     showFatalError(error);
   }
@@ -152,7 +158,7 @@ function buildTabs() {
       createElement("small", { text: scenario.benefit })
     );
     button.append(text);
-    button.addEventListener("click", () => selectScenario(index));
+    button.addEventListener("click", () => launchScenario(index));
     button.addEventListener("keydown", (event) => handleTabKey(event, index));
     elements.tabs.append(button);
   });
@@ -166,7 +172,7 @@ function handleTabKey(event, index) {
   if (event.key === "ArrowRight") next = (index + 1) % state.scenarios.length;
   if (event.key === "Home") next = 0;
   if (event.key === "End") next = state.scenarios.length - 1;
-  selectScenario(next);
+  launchScenario(next);
   elements.tabs.children[next].focus();
 }
 
@@ -176,6 +182,7 @@ function selectScenario(index) {
   state.scenarioIndex = index;
   state.eventIndex = 0;
   state.complete = false;
+  state.journeyFinished = false;
   state.evidenceCount = 0;
   state.generation += 1;
 
@@ -190,6 +197,7 @@ function selectScenario(index) {
   }));
   elements.metrics.replaceChildren();
   elements.evidenceCount.textContent = "0 items";
+  elements.tourPosition.textContent = `Workflow ${index + 1} of ${state.scenarios.length}`;
   buildAgentList(scenario.agents || []);
   showEmptyFeed(scenario);
   updateProgress();
@@ -231,6 +239,8 @@ function showEmptyFeed(scenario) {
 function bindEvents() {
   elements.play.addEventListener("click", togglePlayback);
   elements.restart.addEventListener("click", restartScenario);
+  elements.next.addEventListener("click", handleNext);
+  elements.restartTour.addEventListener("click", startGuidedTour);
   elements.speed.addEventListener("change", () => {
     state.speed = Number(elements.speed.value) || 1;
     if (state.playing) scheduleNext(0);
@@ -257,8 +267,53 @@ function handleGlobalKey(event) {
   } else if (event.key.toLowerCase() === "r") {
     restartScenario();
   } else if (/^[1-4]$/.test(event.key)) {
-    selectScenario(Number(event.key) - 1);
+    launchScenario(Number(event.key) - 1);
   }
+}
+
+function scrollToElement(element) {
+  element?.scrollIntoView({
+    behavior: state.reducedMotion ? "auto" : "smooth",
+    block: "start"
+  });
+}
+
+function startGuidedTour() {
+  selectScenario(0);
+  scrollToElement(document.querySelector("#demo"));
+  startPlayback();
+}
+
+function launchScenario(index) {
+  selectScenario(index);
+  scrollToElement(document.querySelector(".app-shell"));
+  startPlayback();
+}
+
+function advanceJourney() {
+  clearTimeout(state.tourTimer);
+  if (state.scenarioIndex >= state.scenarios.length - 1) {
+    finishJourney();
+    return;
+  }
+  launchScenario(state.scenarioIndex + 1);
+}
+
+function handleNext() {
+  if (state.journeyFinished) {
+    startGuidedTour();
+    return;
+  }
+  advanceJourney();
+}
+
+function finishJourney() {
+  stopPlayback();
+  state.complete = true;
+  state.journeyFinished = true;
+  elements.tourPosition.textContent = "Tour complete";
+  updatePlaybackUi();
+  scrollToElement(document.querySelector("#contact"));
 }
 
 function togglePlayback() {
@@ -292,6 +347,8 @@ function stopPlayback() {
   state.playing = false;
   clearTimeout(state.timer);
   state.timer = null;
+  clearTimeout(state.tourTimer);
+  state.tourTimer = null;
 }
 
 function restartScenario() {
@@ -455,6 +512,7 @@ function finishScenario() {
   state.timer = null;
   updateProgress();
   updatePlaybackUi();
+  state.tourTimer = window.setTimeout(advanceJourney, state.reducedMotion ? 500 : 1600);
 }
 
 function updateProgress() {
@@ -468,6 +526,8 @@ function updatePlaybackUi() {
   elements.runState.lastChild.textContent = state.playing ? " Running" : state.complete ? " Complete" : state.eventIndex ? " Paused" : " Ready";
   elements.play.textContent = state.playing ? "Pause" : state.complete ? "Replay" : state.eventIndex ? "Resume" : "Start demo";
   elements.play.setAttribute("aria-label", state.playing ? "Pause scenario" : state.complete ? "Replay scenario" : "Start or resume scenario");
+  const finalScenario = state.scenarioIndex === state.scenarios.length - 1;
+  elements.next.textContent = state.journeyFinished ? "RESTART TOUR" : finalScenario ? "CONTACT →" : "NEXT →";
 }
 
 async function openArtifact(event) {

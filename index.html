@@ -101,6 +101,15 @@
           </p>
         </div>
 
+        <div class="tour-banner" aria-live="polite">
+          <div>
+            <span class="live-dot"></span>
+            <strong>Guided tour autoplaying</strong>
+            <small id="tour-position">Workflow 1 of 4</small>
+          </div>
+          <span>Watch, pause, or press NEXT at any time.</span>
+        </div>
+
         <div class="scenario-tabs" id="scenario-tabs" role="tablist" aria-label="Demo scenarios"></div>
 
         <div class="app-shell" aria-label="Simulated application workspace">
@@ -153,6 +162,7 @@
                 <div class="playback-row">
                   <button class="icon-button" id="restart-button" type="button" title="Restart scenario (R)" aria-label="Restart scenario">↻</button>
                   <button class="button button-primary play-button" id="play-button" type="button" aria-label="Start scenario">Start demo</button>
+                  <button class="button next-button" id="next-button" type="button">NEXT <span aria-hidden="true">→</span></button>
                   <label class="speed-control" for="speed-select">
                     Speed
                     <select id="speed-select">
@@ -222,7 +232,11 @@
             structured pilot consultation. Do not include client names, case facts, tax
             identifiers, or other confidential information.
           </p>
-          <a id="deployment-link" class="text-link" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo/blob/main/DEPLOYMENT.md">Review deployment options →</a>
+          <div class="contact-links">
+            <a class="button button-primary" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo/issues/new">Contact via GitHub</a>
+            <a id="deployment-link" class="button button-quiet" href="https://github.com/george-shepov/pro_legal_tax_assistant_demo/blob/main/DEPLOYMENT.md">Deployment options</a>
+            <button class="button button-quiet" id="restart-tour-button" type="button">Replay guided tour</button>
+          </div>
         </div>
 
         <form id="lead-form" class="lead-form">
